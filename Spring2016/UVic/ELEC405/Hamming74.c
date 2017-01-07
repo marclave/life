@@ -15,6 +15,40 @@
 #define ENCODED_MESSAGE_SIZE 7
 #define DECODED_MESSAGE_SIZE 7
 
+const int PARITY_CHECK_MATRIX[] = {3, 6, 5, 7, 4, 2, 1};
+
+int *Hamming74_correction(int pBrokenMessage[])
+{
+  int *ret = malloc(sizeof(int *) * ORIGINAL_MESSAGE_SIZE);
+  for (int i = 0; i < ORIGINAL_MESSAGE_SIZE; i++)
+  {
+    ret[i] = pBrokenMessage[i];
+  }
+
+  int syndromeValue = (ret[4] << 2) | (ret[5] << 1) | (ret[6]);
+  int indexToFix = -1;
+  for (int i = 0; i < DECODED_MESSAGE_SIZE; i++)
+  {
+    if (syndromeValue == PARITY_CHECK_MATRIX[i])
+    {
+      indexToFix = i;
+      break;
+    }
+  }
+
+  if (indexToFix == -1)
+  {
+    // TODO create error enum and handle properly
+    printf("Error finding the index\n");
+  }
+  else
+  {
+    ret[indexToFix] = ~ret[indexToFix];
+  }
+
+  return ret;
+}
+
 int *Hamming74_decode(int pMessage[], uint8_t pCorrection)
 {
   // This is our "syndrome" generation
