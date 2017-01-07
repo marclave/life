@@ -6,6 +6,7 @@
   List of TODOs:
     - Pass/return byte (no need for an array, all we need is 8 bits MAX)
     - Unit tests
+    - Remove hard coded parity check matrix
  */
 
 #include <stdlib.h>
